@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   src: string;
@@ -95,7 +95,9 @@ export default function SoundOnScroll({
         // if still blocked, try WebAudio approach (sometimes helps)
         try {
           if (!audioCtxRef.current) {
-            const AC = (window as any).AudioContext || (window as any).webkitAudioContext;
+            const AC =
+              (window as any).AudioContext ||
+              (window as any).webkitAudioContext;
             const audioContext = new AC();
             audioCtxRef.current = audioContext;
             const srcNode = audioContext.createMediaElementSource(audio);
@@ -104,11 +106,11 @@ export default function SoundOnScroll({
             gainNode.gain.value = 0;
             srcNode.connect(gainNode).connect(audioContext.destination);
           }
-          
+
           // Add null check here
           const audioContext = audioCtxRef.current;
           if (!audioContext) return;
-          
+
           await audioContext.resume();
           await audio.play();
           setIsPlaying(true);
@@ -123,8 +125,12 @@ export default function SoundOnScroll({
     };
 
     const events = ["wheel", "touchstart", "scroll", "keydown"];
-    const addListeners = () => events.forEach((ev) => window.addEventListener(ev, onUserGesture, { passive: true }));
-    const remove = () => events.forEach((ev) => window.removeEventListener(ev, onUserGesture));
+    const addListeners = () =>
+      events.forEach((ev) =>
+        window.addEventListener(ev, onUserGesture, { passive: true })
+      );
+    const remove = () =>
+      events.forEach((ev) => window.removeEventListener(ev, onUserGesture));
     const removeListeners = remove; // local alias for inner use
 
     addListeners();
@@ -164,7 +170,8 @@ export default function SoundOnScroll({
       // try WebAudio fallback
       try {
         if (!audioCtxRef.current) {
-          const AC = (window as any).AudioContext || (window as any).webkitAudioContext;
+          const AC =
+            (window as any).AudioContext || (window as any).webkitAudioContext;
           const audioContext = new AC();
           audioCtxRef.current = audioContext;
           const srcNode = audioContext.createMediaElementSource(audio);
@@ -173,11 +180,11 @@ export default function SoundOnScroll({
           gainNode.gain.value = 0;
           srcNode.connect(gainNode).connect(audioContext.destination);
         }
-        
+
         // Add null check here
         const audioContext = audioCtxRef.current;
         if (!audioContext) return;
-        
+
         await audioContext.resume();
         await audio.play();
         setIsPlaying(true);
@@ -212,8 +219,8 @@ export default function SoundOnScroll({
             userSelect: "none",
           }}
           onClick={handleEnableClick}
-          role="button"
-          aria-label="Press anywhere to start"
+          role='button'
+          aria-label='Press anywhere to start'
         >
           <div
             style={{
